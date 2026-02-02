@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import StatCard from "../components/StatCard";
 import type { StatCardData, User } from "../types/dashboard";
 import UsersTable from "../components/UsersTable";
+import Modal from "../components/Modal";
+import UserForm from "../components/UserForm";
 
 const stats: StatCardData[] = [
   { id: "1", label: "Users", value: 1200 },
@@ -13,6 +15,8 @@ const stats: StatCardData[] = [
 const Dashboard = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     useEffect(() => {
         setTimeout(() => {
@@ -51,6 +55,19 @@ const Dashboard = () => {
             </div>
             <h2 style={{ marginTop: "32px" }}>Users</h2>
             <UsersTable users={users} isLoading={isLoading} />
+            <button onClick={() => setIsModalOpen(true)}>Add User</button>
+            <Modal
+                title="Add User"
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            >
+                <UserForm
+                    onSubmit={(user) => {
+                    setUsers((prev) => [...prev, user]);
+                    setIsModalOpen(false);
+                    }}
+                />
+            </Modal>
         </div>
     );
 };
