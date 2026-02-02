@@ -16,6 +16,7 @@ const Dashboard = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
 
     useEffect(() => {
@@ -54,17 +55,35 @@ const Dashboard = () => {
                 ))}
             </div>
             <h2 style={{ marginTop: "32px" }}>Users</h2>
-            <UsersTable users={users} isLoading={isLoading} />
+            <UsersTable 
+                users={users} 
+                isLoading={isLoading} 
+                onEdit={(user) => {
+                        setSelectedUser(user);
+                        setIsModalOpen(true);
+                }}
+            />
             <button onClick={() => setIsModalOpen(true)}>Add User</button>
             <Modal
-                title="Add User"
+                title={selectedUser ? "Edit User" : "Add User"}
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => {
+                    setIsModalOpen(false);
+                    setSelectedUser(null);
+                }}
             >
                 <UserForm
+                    initialData={selectedUser ?? undefined}
                     onSubmit={(user) => {
-                    setUsers((prev) => [...prev, user]);
-                    setIsModalOpen(false);
+                        setUsers((prev) => {
+                        const exists = prev.find((u) => u.id === user.id);
+                        if (exists) {
+                            return prev.map((u) => (u.id === user.id ? user : u));
+                        }
+                        return [...prev, user];
+                        });
+                        setIsModalOpen(false);
+                        setSelectedUser(null);
                     }}
                 />
             </Modal>

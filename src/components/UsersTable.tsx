@@ -3,9 +3,10 @@ import type { User } from "../types/dashboard";
 type UsersTableProps = {
     users : User[];
     isLoading : boolean;
+    onEdit: (user: User) => void;
 }
 
-const UsersTable = ({ users, isLoading }: UsersTableProps) => {
+const UsersTable = ({ users, isLoading, onEdit }: UsersTableProps) => {
     if (isLoading) {
         return <p>Loading users...</p>;
     }
@@ -24,18 +25,22 @@ const UsersTable = ({ users, isLoading }: UsersTableProps) => {
         >
             <thead>
                 <tr>
-                <th align="left">Name</th>
-                <th align="left">Email</th>
-                <th align="left">Status</th>
+                    <th align="left">Name</th>
+                    <th align="left">Email</th>
+                    <th align="left">Status</th>
+                    <th align="left">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {users.map((user) => (
-                <tr key={user.id}>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.status}</td>
-                </tr>
+                    <tr key={user.id}>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.status}</td>
+                        <td>
+                          <button onClick={() => onEdit(user)}>Edit</button>
+                        </td>
+                    </tr>
                 ))}
             </tbody>
         </table>
