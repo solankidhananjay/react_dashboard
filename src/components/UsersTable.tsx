@@ -4,15 +4,20 @@ type UsersTableProps = {
     users : User[];
     isLoading : boolean;
     onEdit: (user: User) => void;
+    onDelete: (id: string) => void;
 }
 
-const UsersTable = ({ users, isLoading, onEdit }: UsersTableProps) => {
+const UsersTable = ({ users, isLoading, onEdit, onDelete }: UsersTableProps) => {
     if (isLoading) {
         return <p>Loading users...</p>;
     }
 
     if (users.length === 0) {
-        return <p>No Users found!!</p>
+        return (
+            <p style={{ color: "#6b7280", marginTop: "16px" }}>
+                No users yet. Click “Add User” to get started.
+            </p>
+        );
     }
 
     return (
@@ -34,11 +39,26 @@ const UsersTable = ({ users, isLoading, onEdit }: UsersTableProps) => {
             <tbody>
                 {users.map((user) => (
                     <tr key={user.id}>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                        <td>{user.status}</td>
-                        <td>
+                        <td style={{ padding: "8px 0" }}>{user.name}</td>
+                        <td style={{ padding: "8px 0" }}>{user.email}</td>
+                        <td style={{
+                                color: user.status === "active" ? "#16a34a" : "#dc2626",
+                                fontWeight: 500,
+                            }}
+                        >
+                            {user.status}
+                        </td>
+                        <td style={{ padding: "8px 0" }}>
                           <button onClick={() => onEdit(user)}>Edit</button>
+                        </td>
+                        <td style={{ padding: "8px 0" }}>
+                            <button onClick={() => onEdit(user)}>Edit</button>
+                            <button
+                                style={{ marginLeft: "8px" }}
+                                onClick={() => onDelete(user.id)}
+                            >
+                                Delete
+                            </button>
                         </td>
                     </tr>
                 ))}

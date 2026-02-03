@@ -10,9 +10,9 @@ const Sidebar = () => {
         >
             <h2>Admin</h2>
             <ul style={{listStyle: "none", padding: 0}}>
-                <li>Dashboard</li>
-                <li>Users</li>
-                <li>Settings</li>
+                <li style={{ padding: "8px 0", cursor: "pointer" }}>Dashboard</li>
+                <li style={{ padding: "8px 0", cursor: "pointer" }}>Users</li>
+                <li style={{ padding: "8px 0", cursor: "pointer" }}>Settings</li>
             </ul>
         </aside>
     );

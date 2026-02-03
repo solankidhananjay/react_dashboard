@@ -39,6 +39,11 @@ const Dashboard = () => {
         }, 1000);
     }, []);
 
+    const handleEdit = (user:User) => {
+        setSelectedUser(user);
+        setIsModalOpen(true);
+    }
+
     return (
         <div>
             <h2>Overview</h2>
@@ -58,9 +63,12 @@ const Dashboard = () => {
             <UsersTable 
                 users={users} 
                 isLoading={isLoading} 
-                onEdit={(user) => {
-                        setSelectedUser(user);
-                        setIsModalOpen(true);
+                onEdit={handleEdit}
+                onDelete={(id) => {
+                    const confirmed = window.confirm("Delete this user?");
+                    if (!confirmed) return;
+
+                    setUsers((prev) => prev.filter((u) => u.id !== id));
                 }}
             />
             <button onClick={() => setIsModalOpen(true)}>Add User</button>
